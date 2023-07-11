@@ -3,6 +3,7 @@ package com.smileframework.bullet.rpc.consumer;
 import com.smileframework.bullet.rpc.consumer.definition.ConsumerDefinition;
 import com.smileframework.bullet.rpc.consumer.definition.ConsumerDefinitionBuilder;
 import com.smileframework.bullet.rpc.consumer.invoke.ConsumerInvokeController;
+import com.smileframework.bullet.rpc.consumer.invoke.DynamicConsumerInvoker;
 import com.smileframework.bullet.rpc.consumer.invoke.fallback.factory.BaseFallbackHandlerFactory;
 import com.smileframework.bullet.rpc.consumer.invoke.fallback.factory.FallbackHandlerFactory;
 import com.smileframework.bullet.rpc.consumer.invoke.filter.ConsumerFilterManager;
@@ -17,6 +18,7 @@ import com.smileframework.bullet.transport.client.BulletClientContext;
 import com.smileframework.bullet.transport.client.connection.ServerConnectionManager;
 import com.smileframework.bullet.transport.common.protocol.serialization.ContentConvertManager;
 
+import java.net.URI;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -124,6 +126,37 @@ public class BulletConsumerContext extends BulletClientContext {
         T proxy = ServiceConsumerProxyFactory.createServiceConsumerRef(invokeController, consumerInterface);
         this.consumerMap.put(consumerInterface, invokeController);
         this.providerRefMap.put(consumerInterface, proxy);
+        return proxy;
+    }
+
+    /**
+     * 创建动态消费者调用器
+     *
+     * @return
+     */
+    public DynamicConsumerInvoker createDynamicConsumerInvoker() {
+        DynamicConsumerInvoker dynamicConsumerInvoker = new DynamicConsumerInvoker();
+        dynamicConsumerInvoker.setConsumerFilterManager(this.consumerFilterManager);
+        dynamicConsumerInvoker.setRequestInvokerFactory(this.consumerRequestInvokerFactory);
+        dynamicConsumerInvoker.setBroadcastRequestInvokerFactory(this.broadcastRequestInvokerFactory);
+        dynamicConsumerInvoker.setResponseErrorHandler(this.getResponseErrorHandler());
+        dynamicConsumerInvoker.setServerConnectionManager(this.getServerConnectionManager());
+        return dynamicConsumerInvoker;
+    }
+
+    public <T> T createServiceConsumerProxy(Class<T> consumerInterface, String address) {
+        this.isReadyCheck();
+        ConsumerDefinition consumerDefinition = ConsumerDefinitionBuilder
+                .create(consumerInterface, this.fallbackHandlerFactory)
+                .createConsumerDefinition();
+        consumerDefinition.setServerAddress(URI.create(address));
+        ConsumerInvokeController invokeController = new ConsumerInvokeController(consumerDefinition)
+                .setConsumerFilterManager(this.consumerFilterManager)
+                .setRequestInvokerFactory(this.consumerRequestInvokerFactory)
+                .setBroadcastRequestInvokerFactory(this.broadcastRequestInvokerFactory)
+                .setResponseErrorHandler(this.getResponseErrorHandler())
+                .setServerConnectionManager(this.getServerConnectionManager());
+        T proxy = ServiceConsumerProxyFactory.createServiceConsumerRef(invokeController, consumerInterface);
         return proxy;
     }
 

@@ -1,6 +1,5 @@
 package com.smileframework.bullet.rpc.consumer.definition;
 
-import com.smileframework.bullet.rpc.consumer.definition.ConsumerDefinition;
 import com.smileframework.bullet.rpc.consumer.definition.constant.RequestMode;
 import com.smileframework.bullet.transport.common.protocol.header.BulletContentType;
 import lombok.Getter;
