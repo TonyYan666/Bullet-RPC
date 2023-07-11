@@ -1,0 +1,32 @@
+syntax = "proto3";
+option java_package = "com.smileframework.bullet.transport.common.protocol";
+option java_outer_classname = "TransportRequestProto";
+
+
+message TransportRequestHeader{
+
+  string requestId = 1;
+
+  int32 operationType = 2;
+
+  int32 contentType = 3;
+
+  string authorization = 4;
+
+  string actionURL = 5;
+
+  map<string, string> metadata = 6;
+
+  string convertDesc = 7;
+
+}
+
+message TransportRequest{
+
+  TransportRequestHeader header = 1;
+
+  bytes payload = 2;
+
+}
+
+

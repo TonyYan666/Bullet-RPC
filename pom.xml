@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.smileframework.bullet</groupId>
+    <artifactId>bullet-parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <fastjson.version>1.2.76</fastjson.version>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <!-- Test libs -->
+        <junit.version>4.12</junit.version>
+        <!-- Build -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <java.encoding>UTF-8</java.encoding>
+        <maven.compiler.version>3.8.0</maven.compiler.version>
+        <maven.surefire.version>2.22.1</maven.surefire.version>
+        <maven.source.version>3.0.1</maven.source.version>
+        <maven.javadoc.version>3.0.1</maven.javadoc.version>
+        <maven.deploy.version>2.8.2</maven.deploy.version>
+        <maven.gpg.version>1.6</maven.gpg.version>
+        <maven.jacoco.version>0.8.3</maven.jacoco.version>
+        <maven.jar.version>3.1.0</maven.jar.version>
+        <maven.pmd.version>3.8</maven.pmd.version>
+        <lombok.version>1.18.22</lombok.version>
+        <netty.version>4.1.75.Final</netty.version>
+        <hutool.version>4.6.4</hutool.version>
+        <projectreactor.version>2022.0.5</projectreactor.version>
+    </properties>
+
+    <modules>
+        <module>bullet-rpc</module>
+        <module>bullet-transport-server</module>
+        <module>bullet-transport-common</module>
+        <module>bullet-transport-client</module>
+        <module>bullet-rpc-spring-boot-starter</module>
+        <module>bullet-rpc-spring-cloud-starter</module>
+        <module>bullet-rpc-old-version-spring-cloud-starter</module>
+        <module>bullet-rpc-demo</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-bom</artifactId>
+                <version>${projectreactor.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc-spring-cloud-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>commons-logging</groupId>-->
+        <!--            <artifactId>commons-logging</artifactId>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.logging.log4j</groupId>-->
+        <!--            <artifactId>log4j-to-slf4j</artifactId>-->
+        <!--            <version>2.13.3</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.slf4j</groupId>-->
+        <!--            <artifactId>jul-to-slf4j</artifactId>-->
+        <!--            <version>1.7.30</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>hessian-lite</artifactId>-->
+        <!--        </dependency>-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>reabam</id>
+            <url>http://192.168.1.90:8089/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>reabam</id>
+            <url>http://192.168.1.90:8089/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+
+</project>

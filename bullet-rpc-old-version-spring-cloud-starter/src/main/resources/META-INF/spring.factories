@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.smileframework.bullet.spring.cloud.common.config.SpringCloudBulletRpcConfigAdapter,\
+com.smileframework.bullet.spring.cloud.consumer.config.BulletConsumerSpringCloudAutoConfig,\
+com.smileframework.bullet.spring.cloud.provider.config.BulletProviderSpringCloudAutoConfig

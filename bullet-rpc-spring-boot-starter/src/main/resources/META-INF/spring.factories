@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.smileframework.bullet.rpc.spring.common.config.BulletCommonAutoConfig,\
+com.smileframework.bullet.rpc.spring.consumer.config.BulletConsumerAutoConfig,\
+com.smileframework.bullet.rpc.spring.provider.config.BulletProviderAutoConfig

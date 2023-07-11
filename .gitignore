@@ -1,0 +1,9 @@
+/bullet-rpc/target/
+/bullet-transport-client/target/
+/bullet-transport-common/target/
+/bullet-transport-server/target/
+/bullet-rpc/target/
+/bullet-rpc-demo/target/
+/bullet-rpc-old-version-spring-cloud-starter/target/
+/bullet-rpc-spring-boot-starter/target/
+/bullet-rpc-spring-cloud-starter/target/
