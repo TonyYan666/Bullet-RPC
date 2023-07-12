@@ -16,7 +16,7 @@ SpringBoot 项目基于Maven 依赖接入
 <dependency>
   <groupId>com.smileframework.bullet</groupId>
   <artifactId>bullet-rpc-spring-boot-starter</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>2.0.0-RELEASE</version>
 </dependency>
 ```
 ### 定义一个RPC服务提供者  
@@ -304,6 +304,29 @@ ServiceConsumerProxyFactory 和 ServiceConsumerProxyInvocation-Handler 都有一
 
 ![image](https://github.com/TonyYan666/Bullet-RPC/assets/17917997/1015ee35-4eae-4d2a-885a-f2879f1f80a4)
 
+除生成一个接口代理类去远程调用，我们还可以通过BulletConsumerContext.createDynamicConsumerInvoker 方法去创建一个 DynamicConsumerInvoker 对象去动态调用任何Provider 的方法。以下是调用的例子
+
+```
+    public static void dynamicInvoker() {
+        BulletConsumerContext context = DefaultBulletConsumerContextBuilder.create().build();
+        DynamicConsumerInvoker consumer = context.createDynamicConsumerInvoker();
+        SubRpcRequest request = new SubRpcRequest();
+        request.setDemoContent("test");
+        request.setIndex(1);
+        request.setSubIndex(2);
+        request.setOther("BBB");
+        for (int i = 0; i < 100; i++) {
+            DemoRpcResponse response = (DemoRpcResponse) consumer.setServerAddress("bullet://localhost")
+                    .setPath("/DemoServiceProvider", "request")
+                    .setReturnType(DemoRpcResponse.class)
+                    .setPreferResponseActualType(true)
+                    .setTransportArgumentsTypes(true)
+                    .setRetry(3)
+                    .setRetryIntervalMs(1000)
+                    .reactiveInvoke(request, "aaa", i).block();
+            System.out.println(response);
+        }
+```
 
 说到这里基本上Bullet RPC Consumer 部分算是讲清楚了。但是我们实际的开发环境上都是基于Spring的基础框架上去开发的，所有Bullet RPC 对SpringBoot 和 SpringCloud 都做了大量的自动配置与功能整合。  
 
@@ -356,6 +379,109 @@ Bullet RPC SpringCloud 框架内部也是通过 BulletConfigAdapter 来实现Spr
 默认情况下，Bullet RPC Spring 环境下会自动扫描 Application 包范围内的所有类，来实现自动 Consumer 和 Provider 的注册。但是有时我们的提供的Consumer是由其他module 或者是 maven 提供的，由于跟当前应用的包不一致可能会导致无法扫描，此时我们可以通过@ScanBulletConsumer 和 @ScanBulletProvider来指定 Consumer 和 Provider的位置。  
 当然 @ScanBulletConsumer 和 @ScanBulletProvider 也是支持多次配置的，也就是说Bullet RPC 会取所有 @ScanBulletConsumer 和 @ScanBulletProvider 的 packages 的并集作为扫描的目标位置。  
 
+
+## 关键参数配置  
+
+- 提供者配置
+
+```
+smile.framework.bullet.server.port = 端口号 模式 2186
+smile.framework.bullet.server.workCorePoolSize =  工作线程数（默认15）
+smile.framework.bullet.server.workMaxPoolSize = 最大工作线程数（默认40）
+smile.framework.bullet.server.workBlockingQueueSize = 工作任务队列大小 默认 10
+smile.framework.bullet.server.enableTransportAuthentication = 是否开始连接认证 默认false
+smile.framework.bullet.server.shutdownUnauthenticationConnection = 是否自动断开认证失败的连接 默认false
+smile.framework.bullet.server.enableInvokeLog = 是否启用调用日志 默认true
+```
+
+  
+- 消费者配置  
+
+```
+smile.framework.bullet.client.handshakeTimeout = 握手超时时间默认3秒
+smile.framework.bullet.client.connectionTimeout = 连接创建超时时间 默认1秒
+smile.framework.bullet.client.idleTimeout = 连接空闲超时时间 默认半小时
+smile.framework.bullet.client.heartbeatTimeout = 心跳超时时间 默认1秒
+smile.framework.bullet.client.enableRequestLog = 是否开启请求日志 默认true
+```
+
+# Bullet RPC Spring-cloud-starter  
+
+Bullet RPC Spring-cloud-starter 主要支持了SpringCloud服务注册与发现，能够实现利用服务名调用RPC提供者。另外 Bullet RPC Spring-cloud-starter 还能直接支持 Spring-cloud 的负载均衡能力。  
+  
+Bullet RPC SpringCloud 的支持非常简单，并不需要我们做什么配置。只需要依赖相关maven模块即可。由于SpringCloud 新旧版本在负载均衡部分代码差异比较大，所以我们提供了两个不同版本的maven依赖来支持新旧版本的SpringCloud 项目  
+
+
+# Bullet RPC maven 依赖
+
+```
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bullet-parent</artifactId>
+        <groupId>com.smileframework.bullet</groupId>
+        <relativePath>../pom.xml</relativePath>
+        <version>2.0.0-RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <artifactId>bullet-dependencies</artifactId>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport-server</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-transport-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc-spring-boot-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc-spring-cloud-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.smileframework.bullet</groupId>
+                <artifactId>bullet-rpc-old-version-spring-cloud-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
+
+```
 
 
 
