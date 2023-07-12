@@ -70,6 +70,16 @@ RPC的调用方也非常简单，只需要根据服务提供方的Service定义�
 我们可以利用 ProviderDefinitionManager 动态注册一个 RPC Provider，也可以动态删除一个Provider。一切都可以由 ProviderDefinitionManager 动态控制。ProviderDefinition下面会包含多个ProviderMethodDefinition来描述provider所有暴露方法的定义。Bullet RPC 就是使用  findProviderMethodDefinition 方法来通过一个actionURL 获得一个 ProviderMethodDefinition，从而实现远程调用方法的定位。 
 
 
+![image](https://github.com/TonyYan666/Bullet-RPC/assets/17917997/63d1f812-d43c-46a7-b13b-770c4e5ccaa6)
+
+###  ProviderInvokeInterceptor 提供者调用拦截器
+  
+提供者调用拦截器与SpringMVC的interceptor类似。在远程调用Provider实例方法时可以通过配置自定义拦截器来对RPC请求作出处理，例如调用权限控制、调用日志（默认Bullet RPC 已经有提供日志拦截器）、请求拦截并修改等等。以下是ProviderInvokeInterceptor的接口定义：  
+  
+<img width="454" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/0bbd6299-4427-4261-9149-9147d322057c">
+
+
+
 
 
 
