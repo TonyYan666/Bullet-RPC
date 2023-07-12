@@ -61,7 +61,15 @@ RPC的调用方也非常简单，只需要根据服务提供方的Service定义�
 
 <img width="451" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/5fbe539a-b9b8-49e5-b84f-4ad319d00e7d">
 
- 
+其实一个RPC请求的执行路由是通过定位一个provider，然后定位一个provider的方法。所以执行一个RPC 不一定需要采用 consumer 的代理对象执行。直接使用Bullet RPC的API，一样可以远程调用指定provider方法。所以通过@ServiceProvider 与 @ServiceProviderMethod 能够很好的暴露一个远程调用方法唯一标识。（为什么不采用完全限定类名？因为我们希望将RPC的接口定义包位置更加灵活。）  
+
+###  ProviderDefinitionManager 提供者的定义管理  
+  
+所有的Bullet RPC Provider 都会生成一个ProviderDefinition来确定一个提供者的定义。而整个应用程序的Provider的定义，将由ProviderDefinitionManager统一管理。  
+  
+我们可以利用 ProviderDefinitionManager 动态注册一个 RPC Provider，也可以动态删除一个Provider。一切都可以由 ProviderDefinitionManager 动态控制。ProviderDefinition下面会包含多个ProviderMethodDefinition来描述provider所有暴露方法的定义。Bullet RPC 就是使用  findProviderMethodDefinition 方法来通过一个actionURL 获得一个 ProviderMethodDefinition，从而实现远程调用方法的定位。 
+
+
 
 
 
