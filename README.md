@@ -19,11 +19,49 @@ SpringBoot 项目基于Maven 依赖接入
   <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
-定义一个RPC服务提供者  
+### 定义一个RPC服务提供者  
+
 使用 @ServiceProvider 定义一个服务提供者。标记 @ServiceProvider 后自动注册到Spring容器当中。接下来就全部交给Bullet RPC 自动配置就可以了。  
+
 <img width="451" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/a39aefed-44d1-4698-9809-095c8abe4cae">
 
+### 定义一个RPC服务消费者
 
+RPC的调用方也非常简单，只需要根据服务提供方的Service定义一个接口即可。值得注意的是，方法的返回值是一个Future对象，代表方法请求以异步的形式请求。当然你也可以不返回Future，那你的请求方法将会以同步的形式调用。  
+@ServiceConsumer 标识这是一个Bullet RPC的调用方，其中有一个必填的参数 serverAddress，标识一个RPC 服务提供者地址。值得注意的是如果不写端口号着默认使用Bullet RPC 默认端口 2186。  
+
+<img width="451" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/cb07e0be-9b12-4eb2-82f3-269a86a90591">
+
+标识了@ServiceConsumer 的接口会自动生成代理类，并且注册到Spring Bean容器当中，在Spring项目中直接注入使用即可。  
+
+<img width="451" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/a01a4e13-3ff1-4755-b062-4eed9bb8a276">
+
+写到这里Bullet RPC 的提供与调用就完成了，那么我们就启动两个服务测试一下吧！当然 Bullet RPC  远远没有那么简单，跟随这篇文档的节奏你会看到Bullet RPC的很多特性与使用方法。我会尽可能的讲Bullet RPC的方方面面都告诉你。  
+
+## Bullet RPC Provider
+
+刚刚我们快速写了一个最简单的Bullet RPC Provider。其实 Provider 可以交给我们去自定义的东西非常多，当然你可以使用最简单方法来完成一个Provider 这完全取决于你的实际业务场景。下面我们来认真看看Bullet RPC Provider 的全貌吧。  
+   
+### @ServiceProvider annotation  
+@ServiceProvider annotation 由 bullet-rpc 的包提供。下图是@ServiceProvider的源码：
+  
+<img width="454" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/a690ee20-8b31-4fb2-afdb-5996a94fdf1d">  
+
+- 服务提供者路径（value）：服务提供者路径是全局定位服务提供者对象的唯一全局标识。如果不指定该参数着使用提供者类名作为提供者路径，这意味着提供者的类名称必须全局唯一，如果有相同名称的提供者必须指定不一样的提供者路径来避免冲突。
+      
+- 是否暴露所有提供者方法供外部调用（provideAllMethods）：默认情况下提供者的所有 public 的方法都会提供给外部RPC消费者调用。如果设置为 FALSE 则只针对定义了@ServiceProviderMethod的方法对外暴露调用。  
+
+### @ServiceProviderMethod annotation  
+  
+@ServiceProviderMethod annotation 主要定义提供者所暴露的功能方法。源码也非常简单
+  
+<img width="454" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/6549b84e-709f-468e-ba4b-1518752c11bc">
+
+- 提供者的方法功能路径（value）：默认是方法名称，意味着同一个provider当中无法定义多个相同名称的方法（方法的重载不支持）。
+
+<img width="451" alt="image" src="https://github.com/TonyYan666/Bullet-RPC/assets/17917997/5fbe539a-b9b8-49e5-b84f-4ad319d00e7d">
+
+ 
 
 
 
