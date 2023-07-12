@@ -48,7 +48,6 @@
             <optional>false</optional>
             <scope>provided</scope>
         </dependency>
-        <!-- spring com.reabam.framework.bullet.spring.cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>

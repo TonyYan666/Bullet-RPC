@@ -9,7 +9,7 @@ import org.springframework.core.Ordered;
 
 /**
  * 已废弃，改用 applicationContext 方式去获得ServiceProvider去注册
- * 具体注册代码 com.reabam.bullet.rpc.spring.provider.config.BulletProviderAutoConfig
+ * 具体注册代码 com.smileframework.bullet.rpc.spring.provider.config.BulletProviderAutoConfig
  */
 @Deprecated
 public class ServiceProviderExportPostProcessor implements BeanPostProcessor, Ordered {

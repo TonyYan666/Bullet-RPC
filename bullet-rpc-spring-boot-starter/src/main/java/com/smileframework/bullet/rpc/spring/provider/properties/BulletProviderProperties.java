@@ -8,7 +8,7 @@ import java.time.Duration;
 
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "reabam.framework.bullet.server")
+@ConfigurationProperties(prefix = "smile.framework.bullet.server")
 public class BulletProviderProperties {
 
     /**
