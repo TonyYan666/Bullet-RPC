@@ -330,6 +330,64 @@ ServiceConsumerProxyFactory 和 ServiceConsumerProxyInvocation-Handler 都有一
 
 说到这里基本上Bullet RPC Consumer 部分算是讲清楚了。但是我们实际的开发环境上都是基于Spring的基础框架上去开发的，所有Bullet RPC 对SpringBoot 和 SpringCloud 都做了大量的自动配置与功能整合。  
 
+## Bullet Consumer 异步调用  
+  
+  
+Bullet Consumer 在定义RPC接口的时候可以定义为Future 返回类型则使用异步的形式进行RPC调用。除了返回Future类型，还支持返回Reactor project 的 Mono 类型，Bullet Consumer Invoker 已经在支持简单的 Reactive 调用。  
+
+- reactive 调用
+```
+@ServiceConsumer(serverAddress = "bullet://localhost", providerPath = "/DemoServiceProvider")
+public interface ReactiveDemoServiceConsumer {
+
+    @ServiceConsumerMethod(preferResponseActualType = true, transportArgumentsTypes = true)
+    Mono<DemoRpcResponse> request(DemoRpcRequest request, String additionalParameter, int number);
+
+}
+```
+
+- 异步调用
+```
+@ServiceConsumer(serverAddress = "bullet://localhost", providerPath = "/DemoServiceProvider")
+public interface ReactiveDemoServiceConsumer {
+
+    @ServiceConsumerMethod(preferResponseActualType = true, transportArgumentsTypes = true)
+    Future<DemoRpcResponse> request(DemoRpcRequest request, String additionalParameter, int number);
+
+}
+```
+
+
+- 同步调用  
+```
+@ServiceConsumer(serverAddress = "bullet://localhost", providerPath = "/DemoServiceProvider")
+public interface ReactiveDemoServiceConsumer {
+
+    @ServiceConsumerMethod(preferResponseActualType = true, transportArgumentsTypes = true)
+    DemoRpcResponse request(DemoRpcRequest request, String additionalParameter, int number);
+
+}
+```
+  
+  
+- 同理 DynamicConsumerInvoker 同样支持这三种调用方式(截取  DynamicConsumerInvoker 的代码片段)
+```
+    public <T> T invoke(Object... objects) {
+        ConsumerMethodDefinition methodDefinition = this.createVirtualMethodDefinition(objects);
+        return (T) functionInvoke(methodDefinition, objects);
+    }
+
+    public <T> Mono<T> reactiveInvoke(Object... objects) {
+        ConsumerMethodDefinition methodDefinition = this.createVirtualMethodDefinition(objects);
+        return this.reactiveMonoFunctionInvoke(methodDefinition, objects).map(o -> (T) o);
+    }
+
+    public <T> Future<T> asyncInvoke(Object... objects) {
+        ConsumerMethodDefinition methodDefinition = this.createVirtualMethodDefinition(objects);
+        return (Future<T>) this.asyncFunctionInvoke(methodDefinition, objects);
+    }
+```
+
 
 # Bullet RPC Spring-boot-starter  
 
