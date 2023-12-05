@@ -8,6 +8,9 @@
     <artifactId>bullet-parent</artifactId>
     <version>2.0.0-RELEASE</version>
     <packaging>pom</packaging>
+    <name>bullet-rpc</name>
+    <description>Bullet RRC 是基于Netty NIO 的私有协议RPC框架。Bullet RPC 能够独立或 者集成到SpringCloud当中使用。通过基准测试 Bullet RPC 性能效率远超基 于HTTP的RPC请求，甚至性能比gRPC与Dubbo还要更快。Bullet RPC 不仅仅对SpringCloud与SpringBoot集成友好，对于RPC请求的安全性上，基于握手请求扩展点能够做到连接的握手时的安全校验，避免未授权的设备接入并访问未授权的系统资源。Bullet RPC 对于SpringCloud的集成也是⾮常全⾯，包括⽀持 SpringCloud 所有的服务注册与发现中间件以及LoadBalancer的完美接⼊。为什么我们要开发 Bullet RPC 和使⽤ Bullet RPC ？ 在RPC选型的过程当中我们尝试了很多框架包括 gRPC、Dubbo、 OpenFeign 等。 OpenFeign ⽬前已经在睿本云系统上⼴泛使⽤，优点是SpringCloud的集成 性好，使⽤简单。其通讯是基于HTTP实现，相对简单与通⽤。但是缺点也⾮常明 显，就是慢。由于HTTP的特性问题，每次请求都需要建⽴TCP连接，对于频繁的 RPC请求显然⼒不从⼼。 gRPC 与 Dubbo 性能接近，gRPC使⽤的是基于HTTP2.0作为底层通讯协 议，⽽dubbo则使⽤dubbo协议作为底层通讯协议（dubbo 3.x 已经开始推⼴使⽤ tuple协议其协议是基于HTTP2.0，相对dubbo协议⽽⾔性能稍差）。gRPC由于使⽤了HTTP2.0通⽤性⽽⾔会⽐Dubbo好。但是两者都是同样的问题，对Spring Cloud的集成不够友好（例如不⽀持Eureka），扩展也相对麻烦。由于gRPC的序列化与接⼝定义都 是通过protobuf来定义，使⽤上对于JAVA⽽⾔会不够友好（对于夸语⾔来说是⼀个 不错的选择）。 最后⽆论是什么RPC框架都没有办法提供很好的灵活性，例如你没有办法对 ⼀个RPC接⼝修改他的超时时间与重试次数。⽽且你没有办法让Dubbo 或者 gRPC 很好的兼容Eureka（因为SpringCloud的老项目都深度使用了Eureka）。虽然OpenFeign 能够提供很好的扩展能⼒，但是基于HTTP的 RPC实在是太慢了，在⾯对⽇益增加的业务量每次都优化都显得⾮常⽆⼒。 Bullet RPC 就是基于以上的种种原因提上了开发⽇程。Bullet RPC 不仅仅解决了 上述的所有问题，⽽且同时满⾜了“快”这个必然需求。Bullet RPC 不仅仅⽐ OpenFeign 要快，甚⾄性能也明显超越了gRPC 与 Dubbo。</description>
+    <url>https://github.com/TonyYan666/Bullet-RPC</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -47,13 +50,34 @@
         <module>bullet-rpc-demo</module>
     </modules>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
     <developers>
         <developer>
-            <name>Tony yan</name>
+            <name>ZHICHAO YAN</name>
             <email>tony308001970@gmail.com</email>
             <organization>smile framework</organization>
         </developer>
     </developers>
+
+    <scm>
+        <url>
+            https://github.com/TonyYan666/Bullet-RPC
+        </url>
+        <connection>
+            scm:git@github.com:TonyYan666/Bullet-RPC.git
+        </connection>
+        <developerConnection>
+            scm:git@github.com:TonyYan666/Bullet-RPC.git
+        </developerConnection>
+    </scm>
 
     <dependencyManagement>
         <dependencies>
@@ -179,6 +203,33 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.version}</version>
                 <configuration>
@@ -203,11 +254,11 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>ossrh</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>snapshots</id>
+            <id>ossrh</id>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>

@@ -88,7 +88,6 @@ public class ProviderInvokeInterceptorManager {
      * @param response         响应对象
      * @param clientConnection 客户端连接
      * @param exception        异常
-     * @return
      */
     public void afterMethodInvokeFailure(ProviderMethodDefinition methodDefinition, BulletRequest<Object[]> request, BulletResponse<?> response, ClientConnection clientConnection, Throwable exception, long costMs) {
         for (ProviderInvokeInterceptor invokeInterceptor : this.invokeInterceptors) {

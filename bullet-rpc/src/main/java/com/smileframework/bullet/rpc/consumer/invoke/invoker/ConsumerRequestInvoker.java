@@ -22,10 +22,10 @@ public interface ConsumerRequestInvoker {
     /**
      * 异步执行远程调用
      *
-     * @param methodDefinition
-     * @param request
-     * @param <T>
-     * @return
+     * @param methodDefinition 方法定义
+     * @param request         请求对象
+     * @param listeners       监听器
+     * @return 返回值
      */
     BulletResponseFuture<?, Object> asyncInvoke(ConsumerMethodDefinition methodDefinition, BulletRequest<Object[]> request, List<GenericFutureListener<Future<? super BulletResponse<Object>>>> listeners);
 

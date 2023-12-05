@@ -43,7 +43,6 @@ public interface ProviderInvokeInterceptor {
      * @param response         响应对象
      * @param clientConnection 客户端连接
      * @param exception        异常
-     * @return
      */
     void afterMethodInvokeFailure(ProviderMethodDefinition methodDefinition,
                                   BulletRequest<Object[]> request,
