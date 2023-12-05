@@ -16,7 +16,7 @@ SpringBoot 项目基于Maven 依赖接入
 <dependency>
   <groupId>com.smileframework.bullet</groupId>
   <artifactId>bullet-rpc-spring-boot-starter</artifactId>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>2.0.0-RELEASE</version>
 </dependency>
 ```
 ### 定义一个RPC服务提供者  
@@ -480,7 +480,7 @@ Bullet RPC SpringCloud 的支持非常简单，并不需要我们做什么配置
         <artifactId>bullet-parent</artifactId>
         <groupId>com.smileframework.bullet</groupId>
         <relativePath>../pom.xml</relativePath>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>2.0.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
@@ -544,8 +544,8 @@ Bullet RPC SpringCloud 的支持非常简单，并不需要我们做什么配置
 
 # Bullet RPC 2.0 正式版本 
 
-Bullet RPC 2.0.0-SNAPSHOT 版本虽然是一个快照版本，但是功能已经非常成熟，只是针对Reactive 写法支持还不够完善，完全不需要担心其稳定性，目前已经大规模在多个生产大型微服务项目中稳定运行。  
-我们也会尽快的推进2.0.0-RELEASE 也欢迎各位的建议与PR
+Bullet RPC 2.0.0-RELEASE 版本正式发布，目前已经大规模在多个生产大型微服务项目中稳定运行。
+欢迎各位的建议与PR
 
 
 
